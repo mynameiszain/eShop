@@ -6,6 +6,7 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { RxAvatar } from "react-icons/rx";
+import { categoriesData } from "../../static/data";
 
 const ShopCreate = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,8 @@ const ShopCreate = () => {
   const [avatar, setAvatar] = useState();
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const [category, setCategory] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,16 +32,18 @@ const ShopCreate = () => {
         zipCode,
         address,
         phoneNumber,
+        category
       })
       .then((res) => {
         toast.success(res.data.message);
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar();
-        setZipCode();
-        setAddress("");
-        setPhoneNumber();
+        // setName("");
+        // setEmail("");
+        // setPassword("");
+        // setAvatar();
+        // setZipCode();
+        // setAddress("");
+        // setPhoneNumber();
+        // setCategory("")
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -86,6 +91,7 @@ const ShopCreate = () => {
               </div>
             </div>
 
+
             <div>
               <label
                 htmlFor="email"
@@ -103,6 +109,26 @@ const ShopCreate = () => {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
+            </div>
+
+
+            <div>
+              <label className="pb-2">
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                className="w-full mt-2 border h-[35px] rounded-[5px]"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="Choose a category">Choose a category</option>
+                {categoriesData &&
+                  categoriesData.map((i) => (
+                    <option value={i.title} key={i.title}>
+                      {i.title}
+                    </option>
+                  ))}
+              </select>
             </div>
 
             <div>

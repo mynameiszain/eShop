@@ -28,6 +28,7 @@ router.post("/create-shop", catchAsyncErrors(async (req, res, next) => {
       name: req.body.name,
       email: email,
       password: req.body.password,
+      category: req.body.category,
       avatar: {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
@@ -39,7 +40,7 @@ router.post("/create-shop", catchAsyncErrors(async (req, res, next) => {
 
     const activationToken = createActivationToken(seller);
 
-    const activationUrl = `https://eshop-tutorial-pyri.vercel.app/seller/activation/${activationToken}`;
+    const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
 
     try {
       await sendMail({
@@ -81,7 +82,7 @@ router.post(
       if (!newSeller) {
         return next(new ErrorHandler("Invalid token", 400));
       }
-      const { name, email, password, avatar, zipCode, address, phoneNumber } =
+      const { name, email, password, avatar, zipCode, address, phoneNumber, category } =
         newSeller;
 
       let seller = await Shop.findOne({ email });
@@ -98,6 +99,7 @@ router.post(
         zipCode,
         address,
         phoneNumber,
+        category
       });
 
       sendShopToken(seller, 201, res);

@@ -28,6 +28,10 @@ const shopSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  category:{
+    type: String,
+    required: [true, "Please enter your category"],
+  },
   role: {
     type: String,
     default: "Seller",

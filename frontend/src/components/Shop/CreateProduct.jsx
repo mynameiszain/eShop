@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 const CreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
   const { success, error } = useSelector((state) => state.products);
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,6 +22,9 @@ const CreateProduct = () => {
   const [originalPrice, setOriginalPrice] = useState();
   const [discountPrice, setDiscountPrice] = useState();
   const [stock, setStock] = useState();
+  const [persons, setPersons] = useState("");
+  const [venuenames, setVenuenames] = useState("");
+  const [venuetypes, setVenuetypes] = useState("");
 
   useEffect(() => {
     if (error) {
@@ -65,6 +70,8 @@ const CreateProduct = () => {
     newForm.append("discountPrice", discountPrice);
     newForm.append("stock", stock);
     newForm.append("shopId", seller._id);
+    newForm.append("persons", persons);
+    newForm.append("venuenames", venuenames)
     dispatch(
       createProduct({
         name,
@@ -74,6 +81,8 @@ const CreateProduct = () => {
         originalPrice,
         discountPrice,
         stock,
+        persons,
+        venuenames,
         shopId: seller._id,
         images,
       })
@@ -86,7 +95,7 @@ const CreateProduct = () => {
       {/* create product form */}
       <form onSubmit={handleSubmit}>
         <br />
-        <div>
+        {/* <div>
           <label className="pb-2">
             Name <span className="text-red-500">*</span>
           </label>
@@ -98,7 +107,57 @@ const CreateProduct = () => {
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your product name..."
           />
-        </div>
+        </div> */}
+        {/* Start-----------------Venue  */}
+        <div>        {
+          seller?.category === "Venue" && <div>
+            <label className="pb-2">
+              Venue Name  <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={venuenames}
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={(e) => setVenuenames(e.target.value)}
+              placeholder="Enter your product name..."
+            />
+                         {/*  */}
+                        <label>
+              Venue Type
+              <span className="text-red-500">*</span>
+            </label>
+              {['Indoor', 'Outdoor'].map((option) => (
+                <div key={option}>
+                  <input
+                    type="radio"
+                    name="name"
+                    value={option}
+                    checked={venuetypes === option}
+                    onChange={() => setVenuetypes(option)}
+                  />
+                  <label>{option}</label>
+                </div>
+              ))}
+              {/*  */}
+         </div>
+        }</div>
+        {/* End-------------------Venue  */}
+        {
+          seller?.category === "Cattering" && <div>
+            <label className="pb-2">
+              How many Person  <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={persons}
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              onChange={(e) => setPersons(e.target.value)}
+              placeholder="Enter your product name..."
+            />
+          </div>
+        }
         <br />
         <div>
           <label className="pb-2">
@@ -115,25 +174,6 @@ const CreateProduct = () => {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter your product description..."
           ></textarea>
-        </div>
-        <br />
-        <div>
-          <label className="pb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="Choose a category">Choose a category</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
-          </select>
         </div>
         <br />
         <div>
